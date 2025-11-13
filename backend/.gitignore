@@ -1,0 +1,3 @@
+# Ignora las carpetas y archivos de configuración de entorno
+node_modules/
+.env

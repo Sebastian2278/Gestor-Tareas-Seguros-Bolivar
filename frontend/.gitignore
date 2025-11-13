@@ -1,0 +1,13 @@
+# Archivos de Node
+node_modules
+.env  # <-- CRUCIAL: No subir tu cadena de conexión a MongoDB/JWT secreto
+dist
+/frontend/dist
+/frontend/node_modules
+/backend/node_modules
+
+# Archivos de OS
+.DS_Store
+
+# Archivos de log
+npm-debug.log*
