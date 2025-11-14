@@ -5,6 +5,7 @@ import RegisterPage from './pages/RegisterPage';
 import TasksPage from './pages/TasksPage';
 import { AuthContext } from './context/AuthContext';
 
+
 // Componente para proteger las rutas (Ruta Privada)
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -30,6 +31,9 @@ function App() {
         {/* Redirección por defecto */}
         <Route path="*" element={<Navigate to="/tasks" />} />
       </Routes>
+    
+
+
     </div>
   );
 }

@@ -16,21 +16,30 @@ function TasksPage() {
     // Función principal para cargar tareas (implementa los filtros)
     const fetchTasks = useCallback(async () => {
         if (!isAuthenticated) return;
-
+    
         setLoading(true);
         setError(null);
         try {
-            // Construye la URL con los filtros
-            const queryParams = new URLSearchParams(filters).toString();
+            // 1. Limpia los filtros con valor vacío ('')
+            const activeFilters = Object.keys(filters).reduce((acc, key) => {
+                if (filters[key] !== '') {
+                    acc[key] = filters[key];
+                }
+                return acc;
+            }, {});
+    
+            // 2. Construye la URL SOLO con los filtros activos
+            const queryParams = new URLSearchParams(activeFilters).toString();
+            // -------------------------------------
+            
             const res = await api.get(`/tasks?${queryParams}`);
             setTasks(res.data);
         } catch (err) {
-            console.error("Error al cargar tareas:", err);
-            setError("No se pudieron cargar las tareas. ¿El backend está corriendo?");
+            // ... (resto del código)
         } finally {
             setLoading(false);
         }
-    }, [isAuthenticated, filters]); 
+    }, [isAuthenticated, filters]);
 
     // Carga las tareas al montar el componente o cuando cambian los filtros
     useEffect(() => {
@@ -46,16 +55,16 @@ function TasksPage() {
                 // Actualizar (PUT)
                 await api.put(`/tasks/${editingTask._id}`, taskData);
                 setEditingTask(null);
-                toast.success('✅ Tarea actualizada con éxito.'); // TOAST ÉXITO
+                console.log('Tarea actualizada con éxito.'); // TOAST ÉXITO
             } else {
                 // Crear (POST)
                 await api.post('/tasks', taskData);
-                toast.success('➕ Tarea creada con éxito.'); //  TOAST ÉXITO
+                console.log('Tarea creada con éxito.'); //  TOAST ÉXITO
             }
             fetchTasks(); 
         } catch (err) {
             const msg = err.response?.data?.msg || err.response?.data?.errors?.[0]?.msg || 'Error al guardar la tarea.';
-            toast.error(`❌ Error: ${msg}`); //  TOAST ERROR
+            console.log(`Error: ${msg}`); //  TOAST ERROR
         }
     };
 
@@ -65,9 +74,9 @@ function TasksPage() {
             try {
                 await api.delete(`/tasks/${id}`);
                 setTasks(tasks.filter(t => t._id !== id));
-                toast.warn(' Tarea eliminada correctamente.'); // TOAST WARN
+                console.log(' Tarea eliminada correctamente.'); 
             } catch (err) {
-                toast.error(' Error al eliminar la tarea.'); // TOAST ERROR
+                console.log(' Error al eliminar la tarea.'); 
             }
         }
     };
@@ -105,18 +114,18 @@ function TasksPage() {
                             Filtrar por Estado:
                             <select name="status" value={filters.status} onChange={handleFilterChange}>
                                 <option value="">Todos</option>
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="En progreso">En Progreso</option>
-                                <option value="Completada">Completada</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="en progreso">En Progreso</option>
+                                <option value="completada">Completada</option>
                             </select>
                         </label>
                         <label>
                         Filtrar por Prioridad:
                     <select name="priority" value={filters.priority} onChange={handleFilterChange}>
                         <option value="">Todos</option>
-                        <option value="Baja">Baja</option>
-                        <option value="Media">Media</option>
-                        <option value="Alta">Alta</option>
+                        <option value="baja">Baja</option>
+                        <option value="media">Media</option>
+                        <option value="alta">Alta</option>
                     </select>
                         </label>
                     </div>

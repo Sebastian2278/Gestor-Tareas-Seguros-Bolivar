@@ -55,9 +55,9 @@ function TaskForm({ currentTask, onSave, onCancel }) {
                 <div className="form-group">
             <label>Prioridad:</label>
             <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                <option value="Baja">Baja</option>
-                <option value="Media">Media</option>
-                <option value="Alta">Alta</option>
+                <option value="baja">Baja</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
             </select>
         </div>
 
@@ -65,9 +65,9 @@ function TaskForm({ currentTask, onSave, onCancel }) {
                     <div className="form-group">
                         <label>Estado:</label>
                         <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="En progreso">En Progreso</option>
-                            <option value="Completada">Completada</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en progreso">En Progreso</option>
+                            <option value="completada">Completada</option>
                         </select>
                     </div>
                 )}
